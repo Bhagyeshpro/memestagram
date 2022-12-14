@@ -1,16 +1,25 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Header from "../components/header"
+import Feed from "../components/Feed"
+
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="bg-black flex-1 flex-col">
       <Head>
-        <title>Create Next App</title>
+        <title>OffensiveApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Offensivegrm...</h1>
+      {/* <h1>Offensivegrm...</h1> */}
+
+      {/* <Header/> */}
+      <Header/>
+      <Feed/>
+      <h1>Memes beyond your Imgination...</h1>
+
 
       {/* <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <h1 className="text-6xl font-bold">
@@ -69,7 +78,6 @@ const Home: NextPage = () => {
           </a>
         </div>
       </main> */}
-
       {/* <footer className="flex h-24 w-full items-center justify-center border-t">
         <a
           className="flex items-center justify-center gap-2"
