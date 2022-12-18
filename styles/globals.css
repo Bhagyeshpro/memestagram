@@ -8,4 +8,8 @@
         @apply h-7 md:inline-flex cursor-pointer hover:scale-110
         transition-all duration-150 ease-out text-red-500; 
     }
+    .btn {
+        @apply h-7 hover:scale-125 transition-all cursor-pointer
+        duration-150 ease-out text-white
+    }
 }

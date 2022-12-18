@@ -3,7 +3,7 @@ import React from 'react'
 import { FireIcon, HomeIcon, PaperAirplaneIcon, PlusCircleIcon, SearchIcon } from "@heroicons/react/outline"
 function header() {
     return (
-        <div className='shadow-sm border-b sticky top-0 z-50 bg-black'>
+        <div className='border-b sticky top-0 z-50 bg-black'>
             <div className='flex justify-between max-w-6xl bg-black mx-4 lg:mx-auto'>
                 {/* Left */}
                 <div className='relative w-24 cursor-pointer p-3 pb-2'>

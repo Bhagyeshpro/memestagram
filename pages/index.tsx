@@ -7,7 +7,7 @@ import Feed from "../components/Feed"
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-black flex-1 flex-col">
+    <div className="flex-1 bg-neutral-800 h-screen overflow-y-scroll scrollbar-none">
       <Head>
         <title>OffensiveApp</title>
         <link rel="icon" href="/favicon.ico" />
@@ -18,7 +18,7 @@ const Home: NextPage = () => {
       {/* <Header/> */}
       <Header/>
       <Feed/>
-      <h1>Memes beyond your Imgination...</h1>
+      {/* <h1>Memes beyond your Imgination...</h1> */}
 
 
       {/* <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
