@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   BookmarkIcon,
   BookOpenIcon, ChatIcon, DotsHorizontalIcon, EmojiHappyIcon, HeartIcon, PaperAirplaneIcon
@@ -10,6 +10,9 @@ import { useSession } from 'next-auth/react'
 
 function Post({ id, username, caption, userImg, img }) {
   const { data: session } = useSession();
+  const [comment, setComment] = useState("")
+  const [comments, setComments] = useState([])
+
 
   return (
     <div className='bg-black my-2 border border-black rounded-sm'>
@@ -53,11 +56,17 @@ function Post({ id, username, caption, userImg, img }) {
       {session && (
         <form className='flex items-center p-3'>
           <EmojiHappyIcon className='btn' />
-          <input type="text" className='border-none focus:ring-0 flex-1 outline-none
+          <input
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            type="text" className='border-none focus:ring-0 flex-1 outline-none
           mx-3 bg-black text-white'
             placeholder='Enter Your Comment...'
           />
-          <button className='text-blue-400 font-semibold'>Post</button>
+          <button 
+            type='submit'
+            disabled={!comment.trim()}
+          className='text-blue-400 font-semibold'>Post</button>
         </form>
       )}
 
