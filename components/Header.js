@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FireIcon, HomeIcon, PaperAirplaneIcon, PlusCircleIcon, SearchIcon } from "@heroicons/react/outline"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useRouter } from 'next/router';
@@ -10,6 +10,19 @@ function header() {
     const { data: session } = useSession();
     const router = useRouter()
     const [open, setOpen] = useRecoilState(modalState);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+
+    useEffect(() => {
+        const adminAccess = () => {
+            if (session?.user?.email === "meditationmusic111@gmail.com") {
+                setIsAdmin(true)
+            } else {
+                setIsAdmin(false)
+            }
+        }
+        adminAccess();
+    }, [session])
 
     return (
         <div className='border-b sticky top-0 z-50 bg-black'>
@@ -45,7 +58,9 @@ function header() {
                     {session ? (
                         <>
                             <FireIcon className="navBtn" />
-                            <PlusCircleIcon className='navBtn' onClick={() => setOpen(true)} />
+                            {isAdmin &&
+                                <PlusCircleIcon className='navBtn' onClick={() => setOpen(true)} />
+                            }
                             <div className='relative navBtn'>
                                 <PaperAirplaneIcon className='navBtn rotate-45' />
                                 <div className='absolute -top-1 -right-2 text-xs w-5 h-5 
