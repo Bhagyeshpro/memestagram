@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import React from 'react'
 
 function MiniProfile() {
@@ -13,7 +13,7 @@ function MiniProfile() {
         <h2 className='font-bold text-white'>{session?.user?.username}</h2>
         <h3 className='text-sm text-white'>Welcome to Offensivgrm</h3>
       </div>
-      <button className='text-blue-400 text-sm font-semibold'>Sign Out</button>
+      <button onClick={signOut} className='text-blue-400 text-sm font-semibold'>Sign Out</button>
     </div>
   )
 }
