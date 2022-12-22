@@ -66,12 +66,23 @@ function header() {
                                 <div className='absolute -top-1 -right-2 text-xs w-5 h-5 
                             bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>7</div>
                             </div>
-                            <img
+                            <div className='w-10 h-10 relative'>
+                                <Image
+                                    onClick={signOut}
+                                    src={session?.user?.image}
+                                    alt='Profile Pic'
+                                    layout='fill'
+                                    objectFit='cover'
+                                    className='rounded-full p-[1px] object-contain
+                                    hover:scale-110 cursor-pointer transform transition duration-200 ease-out'
+                                />
+                            </div>
+                            {/* <img
                                 onClick={signOut}
                                 src={session?.user?.image}
                                 alt='Profile Pic'
                                 className='h-10 rounded-full cursor-pointer'
-                            />
+                            /> */}
                         </>
                     ) : (
                         <button className='text-white font-bold' onClick={signIn}>SignIn</button>

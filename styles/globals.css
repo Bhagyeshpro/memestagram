@@ -12,4 +12,7 @@
         @apply h-7 hover:scale-125 transition-all cursor-pointer
         duration-150 ease-out text-white
     }
+    .iconComment {
+        @apply h-4 text-gray-400
+    }
 }
