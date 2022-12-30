@@ -9,21 +9,24 @@ import { useSession } from 'next-auth/react'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
 import { db, storage } from '../firebase'
 import Moment from 'react-moment'
+import Comments from "./Comments"
 
 
-function Post({ id, username, caption, userImg, img }) {
+function Post({ id, username, caption, userImg, email, img }) {
   const { data: session } = useSession();
   const [comment, setComment] = useState("")
-  const [comments, setComments] = useState([]);
+  // const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
+  // const [likesComment, setLikesComment] = useState([]);
+  // const [hasLikedComment, setHasLikedComment] = useState(false);
 
   // Get Comments from firestore
-  useEffect(() =>
-    onSnapshot(query(collection(db, "posts", id, "comments"), orderBy("timestamp", "desc")), snapshot => {
-      setComments(snapshot.docs)
-    })
-    [db, id]);
+  // useEffect(() =>
+  //   onSnapshot(query(collection(db, "posts", id, "comments"), orderBy("timestamp", "desc")), snapshot => {
+  //     setComments(snapshot.docs)
+  //   })
+  //   [db, id]);
 
   useEffect(() =>
     onSnapshot(query(collection(db, "posts", id, "likes")),
@@ -41,6 +44,16 @@ function Post({ id, username, caption, userImg, img }) {
     }
   }
 
+
+  const deletePost = async () => {
+    if (session?.user?.email === email) {
+      await deleteDoc(doc(db, "posts", id))
+    } else {
+      console.log("You can't delete the post!");
+    }
+  }
+
+
   useEffect(() =>
     setHasLiked(
       likes.findIndex((like) => (like.id === session?.user?.uid)) !== -1
@@ -54,7 +67,7 @@ function Post({ id, username, caption, userImg, img }) {
     e.preventDefault()
 
     const sendToComment = comment;
-    console.log(comment);
+    // console.log(comment);
     setComment("");
 
     await addDoc(collection(db, 'posts', id, 'comments'), {
@@ -62,6 +75,8 @@ function Post({ id, username, caption, userImg, img }) {
       username: session?.user?.username,
       userImage: session?.user?.image,
       timestamp: serverTimestamp(),
+      uniqueId: session?.user?.uid,
+      // userEmail: session?.user?.email,
     });
   }
 
@@ -87,7 +102,7 @@ function Post({ id, username, caption, userImg, img }) {
           className='h-10 w-10 border p-1 mr-3 object-contain rounded-full cursor-pointer'
         /> */}
         <p className='text-white ml-4 flex-1 font-bold'>{username}</p>
-        <DotsHorizontalIcon className='btn' />
+        <DotsHorizontalIcon className='btn' onClick={deletePost} />
       </div>
 
       {/*Img */}
@@ -122,7 +137,7 @@ function Post({ id, username, caption, userImg, img }) {
         <span className='text-white font-bold text-sm'>{username} </span>
         <p className='text-white truncate ml-2 text-sm'>{caption}</p>
       </p> */}
-      <p className="p-4 truncate">
+      <p className="pl-4 pb-2 truncate">
         {likes.length > 0 && (
           <p className='font-bold mb-1 text-white'>{likes.length} likes</p>
         )}
@@ -132,67 +147,30 @@ function Post({ id, username, caption, userImg, img }) {
       </p>
 
       {/* Comments */}
-      {comments.length > 0 && (
-        <div className='ml-4 h-29 max-h-20 overflow-y-scroll scrollbar-thumb-white scrollbar-thin'>
-          {comments.map((comment) => (
-            <div key={comment.id} className="flex items-center space-x-2 mb-2 mr-6">
-              <div className='w-8 h-8 items-center relative'>
-                <Image
-                  src={comment.data().userImage}
-                  alt='Profile Pic'
-                  layout='fill'
-                  objectFit='cover'
-                  className='rounded-full p-[1px] border-red-500 border-2 object-contain
-          hover:scale-110 cursor-pointer transform transition duration-200 ease-out'
-                />
-              </div>
-              {/* <img src={comment.data().userImage} alt="" className="h-7 mt-1 rounded-full " /> */}
-              <div className='flex items-center flex-1'>
-                <div className='flex flex-col flex-1'>
-                  <div className='flex flex-1 flex-row items-center space-x-2'>
-                    <p className='text-sm flex-1 text-white'>
-                      <span className='font-bold'>{comment.data().username}
-                      </span>{" "}
-                      {comment.data().comment}
-                    </p>
-                  </div>
-                  <div className='flex items-center'>
-                    <Moment fromNow className='pr-3 text-xs text-gray-400'>
-                      {comment.data().timestamp?.toDate()}
-                    </Moment>
-                  </div>
-                </div>
-              </div>
-              {/* <div className='flex flex-col items-center'>
-                <HeartIcon className='iconComment' />
-                <p className='text-xs text-gray-400 mt-[1.5px]'>7</p>
-              </div> */}
-            </div>
-          ))}
-
-        </div>
-      )}
+      <Comments postId={id} />
 
       {/* Input */}
-      {session && (
-        <form className='flex items-center p-3'>
-          <EmojiHappyIcon className='btn' />
-          <input
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            type="text" className='border-none focus:ring-0 flex-1 outline-none
+      {
+        session && (
+          <form className='flex items-center p-3'>
+            <EmojiHappyIcon className='btn' />
+            <input
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              type="text" className='border-none focus:ring-0 flex-1 outline-none
           mx-3 bg-black text-white'
-            placeholder='Enter Your Comment...'
-          />
-          <button
-            type='submit'
-            onClick={sendComment}
-            disabled={!comment.trim()}
-            className='text-blue-400 font-semibold'>Post</button>
-        </form>
-      )}
+              placeholder='Enter Your Comment...'
+            />
+            <button
+              type='submit'
+              onClick={sendComment}
+              disabled={!comment.trim()}
+              className='text-blue-400 font-semibold'>Post</button>
+          </form>
+        )
+      }
 
-    </div>
+    </div >
   )
 }
 

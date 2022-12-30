@@ -27,11 +27,12 @@ function Modal() {
       username: session?.user?.username,
       caption: captionRef.current.value,
       profileImg: session?.user?.image,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
+      email: session?.user?.email
     })
     
     // 2. Get the post id from the newly created post
-    console.log("New Doc Added with Id ", docRef.id);
+    // console.log("New Doc Added with Id ", docRef.id);
 
     // 3. Upload the image to firebase storage with the post id
     const imageRef = ref(storage, `posts/${docRef.id}/image`)

@@ -13,6 +13,7 @@
         duration-150 ease-out text-white
     }
     .iconComment {
-        @apply h-4 text-gray-400
+        @apply h-4 text-gray-400 cursor-pointer hover:scale-125
+        duration-150 ease-out 
     }
 }
