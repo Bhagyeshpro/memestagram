@@ -10,19 +10,18 @@ function header() {
     const { data: session } = useSession();
     const router = useRouter()
     const [open, setOpen] = useRecoilState(modalState);
-    const [isAdmin, setIsAdmin] = useState(false);
 
 
-    useEffect(() => {
-        const adminAccess = () => {
-            if (session?.user?.email === "meditationmusic111@gmail.com") {
-                setIsAdmin(true)
-            } else {
-                setIsAdmin(false)
-            }
-        }
-        adminAccess();
-    }, [session])
+    // useEffect(() => {
+    //     const adminAccess = () => {
+    //         if (session?.user?.email === "meditationmusic111@gmail.com") {
+    //             setIsAdmin(true)
+    //         } else {
+    //             setIsAdmin(false)
+    //         }
+    //     }
+    //     adminAccess();
+    // }, [session])
 
     return (
         <div className='border-b sticky  top-0 z-50 bg-black'>
@@ -58,9 +57,7 @@ function header() {
                     {session ? (
                         <>
                             <FireIcon className="navBtn" />
-                            {isAdmin &&
                                 <PlusCircleIcon className='navBtn' onClick={() => setOpen(true)} />
-                            }
                             <div className='relative navBtn'>
                                 <PaperAirplaneIcon className='navBtn rotate-45' />
                                 <div className='absolute -top-1 -right-2 text-xs w-5 h-5 
